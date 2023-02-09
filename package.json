@@ -3,7 +3,6 @@
   "version": "1.0.0",
   "description": "GitHub Action to Deploy SSL certificate to UCloud CDN.",
   "main": "index.js",
-  "repository": "git@github.com:tls-deploy-actions/ucloud-cdn.git",
   "support": "https://github.com/tls-deploy-actions/ucloud-cdn/discussions",
   "author": "TLS deploy action community",
   "license": "MIT",
@@ -12,6 +11,6 @@
   },
   "dependencies": {
     "@actions/core": "^1.10.0",
-    "@ucloud-sdks/ucloud-sdk-js": "^0.2.3"
+    "@ucloud-sdks/ucloud-sdk-js": "https://github.com/tlscertificate/ucloud-sdk-js.git"
   }
 }

@@ -39,7 +39,7 @@ async function main() {
   });
 
   // Get certificate created just now
-  const { CertList } = await client.ucdn().GetCertificateBaseInfoList();
+  const { CertList } = await client.ucdn().getCertificateBaseInfoList();
   const matches = CertList.filter(item => item.CertType === 'ucdn' && item.CertName === CertName);
   if (!matches.length) {
     throw new Error('Certificate not found');
@@ -54,7 +54,7 @@ async function main() {
 
   for (const DomainId of domainsId) {
     console.log(`Deploying certificate to CDN domain ID ${DomainId}.`);
-    await client.ucdn().UpdateUcdnDomainHttpsConfig({
+    await client.ucdn().updateUcdnDomainHttpsConfig({
       Areacode: input.areacode,
       HttpsStatus: `enable`,
       CertType: `ucdn`,
