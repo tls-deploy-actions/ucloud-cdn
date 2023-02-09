@@ -48,14 +48,8 @@ async function main() {
     'DomainId': domainsId,
   });
 
-  console.log(DomainList);
-
   for (const config of DomainList) {
-    console.log(config);
-
     const { Domain, DomainId } = config;
-    console.log(Domain, DomainId);
-
     const { CertList } = await client.ucdn().getCertificateBaseInfoList({Domain});
     const matches = CertList.filter(item => item.CertType === 'ucdn' && item.CertName === CertName);
     if (!matches.length) {
