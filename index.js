@@ -48,13 +48,8 @@ async function main() {
     'DomainId': domainsId,
   });
 
-  for (const DomainId of domainsId) {
-    const domains = DomainList.find((item) => item.DomainId === DomainId);
-    if (!domains) {
-      throw new Error(`Domain ID ${DomainId} not found.`);
-    }
-
-    const { Domain } = domains[0];
+  for (const domainConfig of DomainList) {
+    const { Domain, DomainId } = domainConfig.Domain;
     const { CertList } = await client.ucdn().getCertificateBaseInfoList({Domain});
     const matches = CertList.filter(item => item.CertType === 'ucdn' && item.CertName === CertName);
     if (!matches.length) {
@@ -62,12 +57,11 @@ async function main() {
     }
 
     const { CertId } = matches[0];
-
-    console.log(`Deploying certificate to CDN domain ID ${DomainId}.`);
+    console.log(`Deploying certificate to CDN domain (${DomainId}) ${Domain}.`);
     await client.ucdn().updateUcdnDomainHttpsConfig({
-      Areacode: input.areacode,
       HttpsStatus: `enable`,
       CertType: `ucdn`,
+      Areacode,
       DomainId,
       CertName,
       CertId,
