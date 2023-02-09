@@ -25,6 +25,8 @@ async function main() {
     },
   });
 
+  client.middlewares = client.middlewares.filter(middleware => 'undefined' !== typeof middleware.error);
+
   // Create certificate
   const splited = input.fullchainFile.split(`-----BEGIN `).filter((item) => !!item.trim().length).map((item) => `-----BEGIN ${item}`.trim());
   const UserCert = splited.shift();
