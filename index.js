@@ -35,24 +35,34 @@ async function main() {
     CertName,
     UserCert,
     CaCert,
-    PrivateKey: input.keyFile,
+    PrivateKey: input.keyFile.trim(),
   });
 
-  // Get certificate created just now
-  const { CertList } = await client.ucdn().getCertificateBaseInfoList();
-  const matches = CertList.filter(item => item.CertType === 'ucdn' && item.CertName === CertName);
-  if (!matches.length) {
-    throw new Error('Certificate not found');
-  }
-
-  const { CertId } = matches[0];
   const Areacode = input.areacode;
 
   const domainsId = Array.from(
     new Set(input.domainsId.split(/\s+/).filter((x) => x))
   );
 
+  const { DomainList } = await client.ucdn().getUcdnDomainConfig({
+    'DomainId': domainsId,
+  });
+
   for (const DomainId of domainsId) {
+    const domains = DomainList.find((item) => item.DomainId === DomainId);
+    if (!domains) {
+      throw new Error(`Domain ID ${DomainId} not found.`);
+    }
+
+    const { Domain } = domains[0];
+    const { CertList } = await client.ucdn().getCertificateBaseInfoList({Domain});
+    const matches = CertList.filter(item => item.CertType === 'ucdn' && item.CertName === CertName);
+    if (!matches.length) {
+      throw new Error('Certificate not found');
+    }
+
+    const { CertId } = matches[0];
+
     console.log(`Deploying certificate to CDN domain ID ${DomainId}.`);
     await client.ucdn().updateUcdnDomainHttpsConfig({
       Areacode: input.areacode,
@@ -66,5 +76,5 @@ async function main() {
 }
 
 main().catch((e) => {
-  console.error(e);
+  throw e;
 });
