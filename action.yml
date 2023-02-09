@@ -1,0 +1,31 @@
+name: Deploy SSL certificate to UCloud CDN
+description: Deploy SSL certificate to UCloud CDN
+branding:
+  icon: lock
+  color: green
+inputs:
+  public-key:
+    description: PublicKey provided by ucloud(https://console.ucloud.cn/uaccount/api_manage).
+    required: true
+  private-key:
+    description: Not Cert key! PrivateKey provided by ucloud(https://console.ucloud.cn/uaccount/api_manage).
+    required: true
+  fullchain-file:
+    description: Cert fullchain filepath.
+    required: true
+  key-file:
+    description: Cert key filepath.
+    required: true
+  cdn-domains-id:
+    description: Domain ID list. not domain list!
+    required: true
+  project-id:
+    description: ProjectId
+    required: true
+  areacode:
+    description: Area code, default china('cn')
+    default: 'cn'
+    required: false
+runs:
+  using: node16
+  main: bootstrap.js
