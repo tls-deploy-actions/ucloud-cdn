@@ -41,7 +41,7 @@ async function main() {
   const Areacode = input.areacode;
 
   const domainsId = Array.from(
-    new Set(input.domainsId.split(/\s+/).filter((x) => x))
+    new Set(input.cdnDomainsId.split(/\s+/).filter((x) => x))
   );
 
   const { DomainList } = await client.ucdn().getUcdnDomainConfig({
